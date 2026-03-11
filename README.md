@@ -5,6 +5,9 @@ The goal of NIMIZA is simple:
 Turn **screen time into meaningful learning time** for children.
 Through stories, games, and adventures, NIMIZA helps kids explore the world around them while developing skills that support their growth and understanding.
 
+## 🌐 Live Demo
+https://ayushagarwal619.github.io/NIMIZA
+
 # 🌍 The Idea
 Children today spend a large amount of time on screens.  
 However, most digital content focuses mainly on **entertainment instead of meaningful learning**.
