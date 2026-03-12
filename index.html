@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumio — Learn Through Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a12;
+    --paper: #f5f3ee;
+    --neon: #00e5c4;
+    --coral: #ff5c57;
+    --amber: #ffb800;
+    --violet: #7c3aed;
+    --mid: #6b7280;
+    --card-bg: #ffffff;
+    --border: rgba(10,10,18,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+  .cursor-dot {
+    width: 8px; height: 8px; background: var(--neon);
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    transition: all .12s ease;
+  }
+  body:has(a:hover) .cursor-ring,
+  body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--neon); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(245,243,238,0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: padding .3s;
+  }
+  nav.scrolled { padding: .8rem 4rem; }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.6rem;
+    color: var(--ink); text-decoration: none;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--ink);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    position: relative; overflow: hidden;
+  }
+  .logo-mark::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--neon);
+    border-radius: 50%;
+    top: 6px; left: 6px;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--ink);
+    font-size: .9rem;
+    font-weight: 500;
+    letter-spacing: .02em;
+    position: relative;
+    padding-bottom: 2px;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--neon);
+    transition: width .3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--ink);
+    color: var(--paper) !important;
+    padding: .55rem 1.4rem;
+    border-radius: 100px;
+    font-weight: 600 !important;
+    font-size: .88rem !important;
+    transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--violet); transform: translateY(-1px); }
+  .nav-cta::after { display: none !important; }
+
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all .3s; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+    gap: 3rem;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 30%, rgba(0,229,196,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(124,58,237,.08) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .6rem;
+    background: var(--ink); color: var(--paper);
+    padding: .4rem 1rem .4rem .5rem;
+    border-radius: 100px;
+    font-size: .8rem; font-weight: 600;
+    margin-bottom: 2rem;
+    animation: slideDown .6s ease both;
+  }
+  .hero-badge-dot {
+    width: 22px; height: 22px;
+    background: var(--neon);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: .7rem;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(0,229,196,.5)} 50%{box-shadow:0 0 0 8px rgba(0,229,196,0)} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -.04em;
+    margin-bottom: 1.5rem;
+    animation: slideUp .7s .1s ease both;
+  }
+  h1 .accent { color: var(--neon); position: relative; }
+  h1 .accent::after {
+    content: '';
+    position: absolute; bottom: 4px; left: 0; right: 0;
+    height: 6px;
+    background: var(--neon);
+    opacity: .2;
+    border-radius: 4px;
+  }
+  h1 .coral-text { color: var(--coral); }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--mid);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    animation: slideUp .7s .2s ease both;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: slideUp .7s .3s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--ink); color: var(--paper);
+    padding: .85rem 2rem;
+    border-radius: 100px;
+    font-weight: 600; font-size: .95rem;
+    text-decoration: none;
+    border: none; cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(10,10,18,.2);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(10,10,18,.25); }
+  .btn-primary .arrow { transition: transform .2s; }
+  .btn-primary:hover .arrow { transform: translateX(4px); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: .5rem;
+    color: var(--ink);
+    padding: .85rem 1.5rem;
+    border-radius: 100px;
+    font-weight: 500; font-size: .95rem;
+    text-decoration: none;
+    border: 1.5px solid var(--border);
+    background: white;
+    cursor: pointer;
+    transition: border-color .2s, transform .2s;
+  }
+  .btn-secondary:hover { border-color: var(--ink); transform: translateY(-2px); }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    animation: fadeIn .9s .3s ease both;
+  }
+
+  .float-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 24px rgba(10,10,18,.07), 0 1px 3px rgba(10,10,18,.05);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .float-card:nth-child(1) {
+    grid-column: 1 / 3;
+    display: flex; align-items: center; gap: 1.5rem;
+    animation: floatA 6s ease infinite;
+  }
+  .float-card:nth-child(2) { animation: floatB 7s ease infinite; }
+  .float-card:nth-child(3) { animation: floatA 8s .5s ease infinite; }
+
+  @keyframes floatA { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  @keyframes floatB { 0%,100%{transform:translateY(-4px)} 50%{transform:translateY(4px)} }
+
+  .card-emoji { font-size: 2.5rem; }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.1rem;
+    margin-bottom: .2rem;
+  }
+  .card-sub { font-size: .8rem; color: var(--mid); }
+  .card-tag {
+    display: inline-block;
+    background: var(--neon);
+    color: var(--ink);
+    font-size: .7rem; font-weight: 700;
+    padding: .2rem .6rem;
+    border-radius: 100px;
+    letter-spacing: .05em;
+    margin-bottom: .6rem;
+  }
+  .card-big-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    line-height: 1;
+  }
+  .card-accent { position: absolute; bottom: 0; right: 0; font-size: 3rem; opacity: .15; }
+
+  .progress-bar {
+    width: 100%; height: 6px;
+    background: rgba(10,10,18,.07);
+    border-radius: 4px;
+    margin-top: .8rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon), var(--violet));
+    border-radius: 4px;
+    animation: grow 2s 1s ease both;
+  }
+  @keyframes grow { from{width:0} to{width:78%} }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem 4rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-bar::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,196,.08), rgba(124,58,237,.06));
+  }
+  .stat { position: relative; text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem; font-weight: 800;
+    line-height: 1;
+    color: var(--neon);
+  }
+  .stat-label { font-size: .85rem; color: rgba(245,243,238,.6); margin-top: .3rem; }
+  .stat-divider { width: 1px; background: rgba(245,243,238,.1); }
+
+  /* SECTION SHARED */
+  section { padding: 7rem 4rem; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font-size: .75rem; font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    width: 20px; height: 2px;
+    background: var(--neon);
+    border-radius: 2px;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    margin-bottom: 1.2rem;
+  }
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--mid);
+    line-height: 1.7;
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* PILLARS / SKILLS */
+  .skills-section { background: white; }
+  .skills-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 4rem;
+    flex-wrap: wrap; gap: 2rem;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .skill-card {
+    background: var(--paper);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid var(--border);
+    transition: transform .3s, box-shadow .3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent-color, var(--neon));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+  }
+  .skill-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(10,10,18,.1); }
+  .skill-card:hover::before { transform: scaleX(1); }
+
+  .skill-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+    background: var(--icon-bg, rgba(0,229,196,.12));
+  }
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.15rem;
+    margin-bottom: .5rem;
+  }
+  .skill-desc { font-size: .88rem; color: var(--mid); line-height: 1.65; }
+
+  /* WATCH / VIDEO SECTION */
+  .watch-section {
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .watch-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 50% 60% at 90% 50%, rgba(0,229,196,.1) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 10% 50%, rgba(124,58,237,.1) 0%, transparent 70%);
+  }
+  .watch-inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+  }
+  .watch-section h2 { color: var(--paper); }
+  .watch-section .section-sub { color: rgba(245,243,238,.6); }
+
+  .video-stack {
+    position: relative;
+    aspect-ratio: 4/3;
+    max-width: 480px;
+    margin-left: auto;
+  }
+  .video-card {
+    position: absolute;
+    width: 85%; background: #1a1a2e;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .video-card:nth-child(1) { right: 0; top: 0; z-index: 3; animation: floatA 7s ease infinite; }
+  .video-card:nth-child(2) {
+    left: 0; bottom: 0; z-index: 2;
+    transform: rotate(-3deg);
+    animation: floatB 8s ease infinite;
+  }
+  .video-thumb {
+    width: 100%; aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .video-thumb-1 { background: linear-gradient(135deg, #1e3a5f, #0f2027); }
+  .video-thumb-2 { background: linear-gradient(135deg, #2d1b4e, #1a0e30); }
+  .play-btn {
+    width: 52px; height: 52px;
+    background: rgba(255,255,255,.9);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: transform .2s, background .2s;
+  }
+  .play-btn:hover { transform: scale(1.1); background: var(--neon); }
+  .play-btn svg { fill: var(--ink); margin-left: 3px; }
+  .video-info { padding: 1rem 1.2rem; }
+  .video-ep { font-size: .7rem; font-weight: 700; color: var(--neon); letter-spacing: .1em; text-transform: uppercase; }
+  .video-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: var(--paper); }
+
+  .episode-chips { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2rem; }
+  .episode-chip {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 100px;
+    padding: .4rem 1rem;
+    font-size: .82rem; color: rgba(245,243,238,.8);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+  }
+  .episode-chip:hover { background: rgba(0,229,196,.15); border-color: var(--neon); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon); }
+
+  /* WHY TRUST */
+  .trust-section {
+    background: var(--paper);
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 6rem; align-items: center;
+    padding: 7rem 4rem;
+  }
+  .trust-features { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2.5rem; }
+  .trust-feature {
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .trust-feature:hover { transform: translateX(6px); box-shadow: 0 8px 24px rgba(10,10,18,.08); }
+  .trust-feat-icon {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 1.3rem;
+  }
+  .trust-feat-title { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: .25rem; }
+  .trust-feat-desc { font-size: .85rem; color: var(--mid); line-height: 1.6; }
+
+  .trust-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .trust-tile {
+    background: white;
+    border-radius: 20px;
+    padding: 1.8rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(10,10,18,.05);
+    transition: transform .25s;
+  }
+  .trust-tile:hover { transform: translateY(-4px); }
+  .trust-tile:nth-child(1) { grid-column: 1 / 3; background: var(--ink); color: var(--paper); }
+  .trust-tile-icon { font-size: 2rem; margin-bottom: .8rem; }
+  .trust-tile-big {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem; font-weight: 800; line-height: 1;
+    color: var(--neon);
+    margin-bottom: .2rem;
+  }
+  .trust-tile-label { font-size: .82rem; color: rgba(245,243,238,.6); }
+  .trust-tile-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1.05rem;
+    margin-bottom: .4rem;
+  }
+  .trust-tile-desc { font-size: .82rem; color: var(--mid); line-height: 1.6; }
+
+  /* COMMUNITY */
+  .community-section {
+    background: linear-gradient(135deg, #f0fdf9 0%, #fdf4ff 100%);
+    text-align: center;
+    padding: 7rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .community-section::before {
+    content: '';
+    position: absolute; top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(0,229,196,.15), transparent 70%);
+    pointer-events: none;
+  }
+  .community-section h2 { max-width: 600px; margin: 0 auto 1rem; }
+  .community-section .section-sub { margin: 0 auto 3rem; }
+
+  .community-avatars {
+    display: flex; justify-content: center;
+    margin-bottom: 2rem;
+  }
+  .avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin-left: -12px;
+    font-size: 1.5rem;
+    display: grid; place-items: center;
+    background: var(--bg);
+    box-shadow: 0 2px 8px rgba(10,10,18,.12);
+  }
+  .avatar:first-child { margin-left: 0; }
+  .avatar-more {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: .78rem;
+  }
+
+  .community-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+    text-align: left;
+    position: relative; z-index: 1;
+  }
+  .community-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.8rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(10,10,18,.05);
+    transition: transform .25s;
+  }
+  .community-card:hover { transform: translateY(-5px); }
+  .quote-icon { font-size: 2rem; margin-bottom: .8rem; line-height: 1; }
+  .quote-text { font-size: .9rem; color: var(--mid); line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+  .quote-author { display: flex; align-items: center; gap: .8rem; }
+  .quote-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 1.1rem;
+    background: var(--bg);
+  }
+  .quote-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .88rem; }
+  .quote-role { font-size: .76rem; color: var(--mid); }
+
+  /* FEATURES BADGE ROW */
+  .badges-section {
+    background: white;
+    padding: 4rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .badge-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    transition: transform .2s;
+  }
+  .badge-item:hover { transform: translateY(-3px); }
+  .badge-icon-wrap {
+    width: 48px; height: 48px; flex-shrink: 0;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    font-size: 1.4rem;
+  }
+  .badge-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; }
+  .badge-sub { font-size: .78rem; color: var(--mid); margin-top: .1rem; }
+
+  /* CTA FINAL */
+  .cta-section {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,229,196,.1), transparent 70%);
+  }
+  .cta-section h2 { color: var(--paper); position: relative; max-width: 640px; margin: 0 auto 1rem; }
+  .cta-section .section-sub { color: rgba(245,243,238,.6); position: relative; margin: 0 auto 2.5rem; }
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+  .btn-neon {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--neon); color: var(--ink);
+    padding: .9rem 2.2rem;
+    border-radius: 100px;
+    font-weight: 700; font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 24px rgba(0,229,196,.3);
+  }
+  .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(0,229,196,.4); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: .5rem;
+    color: var(--paper);
+    padding: .9rem 2.2rem;
+    border-radius: 100px;
+    font-weight: 500; font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1.5px solid rgba(245,243,238,.2);
+    transition: border-color .2s, transform .2s;
+  }
+  .btn-ghost:hover { border-color: var(--neon); transform: translateY(-2px); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(245,243,238,.5);
+    padding: 4rem 4rem 2rem;
+    border-top: 1px solid rgba(245,243,238,.06);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand { color: var(--paper); }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem;
+    margin-bottom: .8rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .footer-desc { font-size: .85rem; line-height: 1.7; max-width: 280px; }
+  .footer-social { display: flex; gap: .8rem; margin-top: 1.5rem; }
+  .social-btn {
+    width: 38px; height: 38px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px;
+    display: grid; place-items: center;
+    cursor: pointer;
+    text-decoration: none; color: var(--paper);
+    font-size: 1rem;
+    transition: background .2s, border-color .2s;
+  }
+  .social-btn:hover { background: var(--neon); border-color: var(--neon); color: var(--ink); }
+
+  .footer-col h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: .9rem;
+    color: var(--paper);
+    margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+  .footer-col a { text-decoration: none; color: rgba(245,243,238,.5); font-size: .85rem; transition: color .2s; }
+  .footer-col a:hover { color: var(--neon); }
+  .footer-bottom {
+    border-top: 1px solid rgba(245,243,238,.06);
+    padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: .8rem;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-bottom a { color: rgba(245,243,238,.5); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--neon); }
+
+  /* ANIMATIONS */
+  @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  /* INTERSECTION OBSERVER TARGETS */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+  .reveal-delay-4 { transition-delay: .4s; }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--ink);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    color: var(--paper); text-decoration: none;
+    transition: color .2s;
+  }
+  .mobile-menu a:hover { color: var(--neon); }
+  .mobile-close {
+    position: absolute; top: 1.5rem; right: 2rem;
+    font-size: 2rem; color: var(--paper); cursor: pointer;
+    background: none; border: none;
+  }
+
+  /* RESPONSIVE */
+  @media(max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; padding: 7rem 2.5rem 4rem; }
+    .hero-visual { max-width: 500px; margin: 0 auto; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .watch-inner { grid-template-columns: 1fr; }
+    .video-stack { max-width: 380px; margin: 0 auto; }
+    .trust-section { grid-template-columns: 1fr; padding: 5rem 2.5rem; }
+    .community-cards { grid-template-columns: 1fr; }
+    .badges-section { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav { padding: 1.2rem 2.5rem; }
+    section { padding: 5rem 2.5rem; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); padding: 2.5rem; }
+  }
+
+  @media(max-width: 680px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    h1 { font-size: 2.6rem; }
+    h2 { font-size: 2rem; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .badges-section { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: 1fr 1fr; padding: 2rem 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    nav { padding: 1rem 1.5rem; }
+    .hero-visual { grid-template-columns: 1fr; }
+    .float-card:nth-child(1) { grid-column: 1; }
+    .trust-visual { grid-template-columns: 1fr; }
+    .trust-tile:nth-child(1) { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor">
+  <div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()">✕</button>
+  <a href="#skills" onclick="toggleMenu()">Skills</a>
+  <a href="#watch" onclick="toggleMenu()">Watch</a>
+  <a href="#why" onclick="toggleMenu()">Why Lumio</a>
+  <a href="#community" onclick="toggleMenu()">Community</a>
+  <a href="#" onclick="toggleMenu()">Get Started →</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <span class="logo-mark"></span>
+    Lumio
+  </a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#watch">Watch</a></li>
+    <li><a href="#why">Why Lumio</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#" class="nav-cta">Start Free</a></li>
+  </ul>
+  <div class="nav-hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot">✦</span>
+      Now live · Trusted by 50k+ families
+    </div>
+    <h1>
+      Where kids<br>
+      <span class="accent">grow</span> through<br>
+      <span class="coral-text">every story</span>
+    </h1>
+    <p class="hero-sub">
+      Short, beautifully crafted micro-lessons that teach emotional intelligence, social skills, and real-world habits — disguised as adventures kids actually love.
+    </p>
+    <div class="hero-actions">
+      <a href="#watch" class="btn-primary">
+        Explore Episodes <span class="arrow">→</span>
+      </a>
+      <a href="#why" class="btn-secondary">
+        ▷ &nbsp;See how it works
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="float-card">
+      <div class="card-emoji">🚀</div>
+      <div>
+        <div class="card-tag">New Episode</div>
+        <div class="card-title">The Courage Capsule</div>
+        <div class="card-sub">Zara faces her first day in a new city</div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+      </div>
+    </div>
+    <div class="float-card">
+      <div class="card-tag">Skill</div>
+      <div class="card-title">Empathy</div>
+      <div class="card-big-num">+14</div>
+      <div class="card-sub">episodes this month</div>
+      <div class="card-accent">💛</div>
+    </div>
+    <div class="float-card">
+      <div class="card-tag">Achievement</div>
+      <div class="card-title">Problem Solver</div>
+      <div class="card-big-num">🏆</div>
+      <div class="card-sub">Streak: 12 days</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat reveal">
+    <div class="stat-num">200+</div>
+    <div class="stat-label">Episodes Published</div>
+  </div>
+  <div class="stat reveal reveal-delay-1">
+    <div class="stat-num">50k</div>
+    <div class="stat-label">Families Worldwide</div>
+  </div>
+  <div class="stat reveal reveal-delay-2">
+    <div class="stat-num">96%</div>
+    <div class="stat-label">Parent Satisfaction</div>
+  </div>
+  <div class="stat reveal reveal-delay-3">
+    <div class="stat-num">12</div>
+    <div class="stat-label">Core Life Skill Pillars</div>
+  </div>
+</div>
+
+<!-- SKILLS / PILLARS -->
+<section class="skills-section" id="skills">
+  <div class="skills-header">
+    <div>
+      <div class="section-label">Content Pillars</div>
+      <h2>Every skill, one<br>adventure at a time</h2>
+    </div>
+    <p class="section-sub">
+      Our curriculum is built on 12 evidence-based pillars that span the full spectrum of social-emotional learning — designed for ages 3–10.
+    </p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal" style="--accent-color:#00e5c4; --icon-bg:rgba(0,229,196,.12)">
+      <div class="skill-icon">🌊</div>
+      <div class="skill-name">Emotional Regulation</div>
+      <div class="skill-desc">Helping kids name, understand, and manage their feelings before they overflow.</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-1" style="--accent-color:#ff5c57; --icon-bg:rgba(255,92,87,.12)">
+      <div class="skill-icon">🤝</div>
+      <div class="skill-name">Empathy & Kindness</div>
+      <div class="skill-desc">Stories that build the muscle of understanding others' perspectives and feelings.</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-2" style="--accent-color:#7c3aed; --icon-bg:rgba(124,58,237,.12)">
+      <div class="skill-icon">💬</div>
+      <div class="skill-name">Communication</div>
+      <div class="skill-desc">From saying "I feel..." to asking for help — confident expression in all forms.</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-3" style="--accent-color:#ffb800; --icon-bg:rgba(255,184,0,.12)">
+      <div class="skill-icon">🧩</div>
+      <div class="skill-name">Problem Solving</div>
+      <div class="skill-desc">Step-by-step thinking strategies wrapped inside irresistible challenges.</div>
+    </div>
+    <div class="skill-card reveal" style="--accent-color:#00e5c4; --icon-bg:rgba(0,229,196,.12)">
+      <div class="skill-icon">🌱</div>
+      <div class="skill-name">Growth Mindset</div>
+      <div class="skill-desc">Mistakes as teachers, effort as superpower — the belief that brains can grow.</div>
+    </div>
+    <div class="skill-card reveal reveal-delay-1" style="--accent-color:#ff5c57; --icon-bg:rgba(255,92,87,.12)">
+      <div class="skill-icon">⭐</div>
+      <div class="skill-name">Confidence & Identity</div>
+      <div class="skill-desc">Who am I? What makes me special? Adventures in self-discovery and pride.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WATCH SECTION -->
+<section class="watch-section" id="watch">
+  <div class="watch-inner">
+    <div>
+      <div class="section-label" style="color:rgba(245,243,238,.4)">Episodes</div>
+      <h2>Cartoons that<br>actually teach</h2>
+      <p class="section-sub">
+        Short 3–8 minute episodes woven around real challenges kids face. No fluff, no noise — just purposeful storytelling with heart.
+      </p>
+      <div class="episode-chips">
+        <div class="episode-chip"><span class="chip-dot"></span> New This Week</div>
+        <div class="episode-chip"><span class="chip-dot"></span> Emotional Skills</div>
+        <div class="episode-chip"><span class="chip-dot"></span> Friendship</div>
+        <div class="episode-chip"><span class="chip-dot"></span> Bravery</div>
+        <div class="episode-chip"><span class="chip-dot"></span> Good Habits</div>
+        <div class="episode-chip"><span class="chip-dot"></span> Mindfulness</div>
+      </div>
+      <div style="margin-top:2.5rem">
+        <a href="#" class="btn-neon">Watch Free Episodes →</a>
+      </div>
+    </div>
+    <div class="video-stack reveal">
+      <div class="video-card">
+        <div class="video-thumb video-thumb-1">
+          <div class="play-btn">
+            <svg width="16" height="18" viewBox="0 0 16 18"><path d="M0 0L16 9L0 18V0Z"/></svg>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">S2 · EP 07</div>
+          <div class="video-title">The Day Zara Said No</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb video-thumb-2">
+          <div class="play-btn">
+            <svg width="16" height="18" viewBox="0 0 16 18"><path d="M0 0L16 9L0 18V0Z"/></svg>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-ep">S1 · EP 12</div>
+          <div class="video-title">Kai's Big Feelings Storm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY TRUST -->
+<div class="trust-section" id="why">
+  <div>
+    <div class="section-label">The Lumio Difference</div>
+    <h2>Built for how kids<br>actually learn</h2>
+    <p class="section-sub">Every creative decision, every story beat, every frame — designed around child development science, not engagement metrics.</p>
+    <div class="trust-features">
+      <div class="trust-feature reveal">
+        <div class="trust-feat-icon" style="background:rgba(0,229,196,.1)">🧠</div>
+        <div>
+          <div class="trust-feat-title">SEL-Grounded Curriculum</div>
+          <div class="trust-feat-desc">Built on Social Emotional Learning frameworks validated by educators and child psychologists worldwide.</div>
+        </div>
+      </div>
+      <div class="trust-feature reveal reveal-delay-1">
+        <div class="trust-feat-icon" style="background:rgba(124,58,237,.1)">🎨</div>
+        <div>
+          <div class="trust-feat-title">Calm, Intentional Design</div>
+          <div class="trust-feat-desc">Soft pacing, soothing palettes, and zero sensory overload — intentionally engineered for young minds.</div>
+        </div>
+      </div>
+      <div class="trust-feature reveal reveal-delay-2">
+        <div class="trust-feat-icon" style="background:rgba(255,184,0,.1)">🔬</div>
+        <div>
+          <div class="trust-feat-title">Evidence-Informed Stories</div>
+          <div class="trust-feat-desc">Scenarios based on real peer-reviewed research in child behavior, habit formation, and resilience.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-visual reveal">
+    <div class="trust-tile">
+      <div class="trust-tile-icon">✨</div>
+      <div class="trust-tile-big">4.9★</div>
+      <div class="trust-tile-label">Average parent rating across 3,200+ reviews</div>
+    </div>
+    <div class="trust-tile">
+      <div class="trust-tile-name">Zero Ads</div>
+      <div class="trust-tile-icon">🚫</div>
+      <div class="trust-tile-desc">No advertising, no sponsored content, ever. Kids come first.</div>
+    </div>
+    <div class="trust-tile">
+      <div class="trust-tile-name">Free to Start</div>
+      <div class="trust-tile-icon">🎁</div>
+      <div class="trust-tile-desc">Full access to our starter library, always free.</div>
+    </div>
+    <div class="trust-tile">
+      <div class="trust-tile-name">Ages 3–10</div>
+      <div class="trust-tile-icon">🌈</div>
+      <div class="trust-tile-desc">Age-adaptive content that grows with your child.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURE BADGES -->
+<div class="badges-section">
+  <div class="badge-item reveal">
+    <div class="badge-icon-wrap" style="background:rgba(0,229,196,.12)">🔇</div>
+    <div>
+      <div class="badge-title">No Sensory Overwhelm</div>
+      <div class="badge-sub">Calm audio & gentle pacing</div>
+    </div>
+  </div>
+  <div class="badge-item reveal reveal-delay-1">
+    <div class="badge-icon-wrap" style="background:rgba(255,92,87,.12)">🎯</div>
+    <div>
+      <div class="badge-title">Purpose-First Content</div>
+      <div class="badge-sub">Every scene has a learning goal</div>
+    </div>
+  </div>
+  <div class="badge-item reveal reveal-delay-2">
+    <div class="badge-icon-wrap" style="background:rgba(124,58,237,.12)">🌍</div>
+    <div>
+      <div class="badge-title">Globally Inclusive</div>
+      <div class="badge-sub">Diverse characters & stories</div>
+    </div>
+  </div>
+  <div class="badge-item reveal reveal-delay-3">
+    <div class="badge-icon-wrap" style="background:rgba(255,184,0,.12)">📚</div>
+    <div>
+      <div class="badge-title">Curriculum-Aligned</div>
+      <div class="badge-sub">Mapped to school SEL standards</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY -->
+<section class="community-section" id="community">
+  <div class="section-label" style="justify-content:center">Community</div>
+  <h2 class="reveal">Join 50,000+ families<br>raising emotionally smart kids</h2>
+  <p class="section-sub reveal">Practical tools, parenting insights, and a community that gets it — because raising great humans is a team sport.</p>
+
+  <div class="community-avatars reveal">
+    <div class="avatar" style="--bg:#fde68a">😊</div>
+    <div class="avatar" style="--bg:#a7f3d0">🙋</div>
+    <div class="avatar" style="--bg:#ddd6fe">👩</div>
+    <div class="avatar" style="--bg:#fecaca">👨</div>
+    <div class="avatar" style="--bg:#bfdbfe">🧑</div>
+    <div class="avatar avatar-more" style="--bg:#0a0a12">+49k</div>
+  </div>
+
+  <a href="#" class="btn-primary reveal" style="margin: 0 auto 3rem; display:inline-flex;">Join the Community →</a>
+
+  <div class="community-cards">
+    <div class="community-card reveal">
+      <div class="quote-icon">💬</div>
+      <p class="quote-text">My daughter asked me "Mum, is that how I make you feel?" after watching the empathy episode. I cried happy tears. This stuff actually works.</p>
+      <div class="quote-author">
+        <div class="quote-avatar" style="background:#fde68a">👩</div>
+        <div>
+          <div class="quote-name">Sarah M.</div>
+          <div class="quote-role">Mom of 2 · Toronto</div>
+        </div>
+      </div>
+    </div>
+    <div class="community-card reveal reveal-delay-1">
+      <div class="quote-icon">💬</div>
+      <p class="quote-text">I've tried every kids app out there. Lumio is the only one I don't have to feel guilty about my son watching. It's genuinely enriching.</p>
+      <div class="quote-author">
+        <div class="quote-avatar" style="background:#a7f3d0">👨</div>
+        <div>
+          <div class="quote-name">David K.</div>
+          <div class="quote-role">Dad of 3 · London</div>
+        </div>
+      </div>
+    </div>
+    <div class="community-card reveal reveal-delay-2">
+      <div class="quote-icon">💬</div>
+      <p class="quote-text">We use Lumio episodes in our classroom as conversation starters. The kids are obsessed, and the skills stick. Highly recommend.</p>
+      <div class="quote-author">
+        <div class="quote-avatar" style="background:#ddd6fe">🧑</div>
+        <div>
+          <div class="quote-name">Ms. Priya R.</div>
+          <div class="quote-role">Year 2 Teacher · Melbourne</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-label" style="justify-content:center; color:rgba(245,243,238,.4)">Get Started</div>
+  <h2 class="reveal">Your child's emotional<br>superpowers start here</h2>
+  <p class="section-sub reveal">Free to join. No credit card. No ads. Just stories that matter.</p>
+  <div class="cta-actions reveal">
+    <a href="#" class="btn-neon">Start Watching Free →</a>
+    <a href="#" class="btn-ghost">Learn About Our Method</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-mark"></span>
+        Lumio
+      </div>
+      <p class="footer-desc">Purposeful cartoons that build the life skills kids need to thrive — emotionally, socially, and beyond.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">▶</a>
+        <a href="#" class="social-btn">✦</a>
+        <a href="#" class="social-btn">◆</a>
+        <a href="#" class="social-btn">●</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#">All Episodes</a></li>
+        <li><a href="#">Skill Pillars</a></li>
+        <li><a href="#">Meet the Characters</a></li>
+        <li><a href="#">Free Downloads</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Method</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Child Safety</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Lumio. All rights reserved.</span>
+    <span>Made with ♥ for curious little humans</span>
+  </div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  const dot = document.getElementById('cursorDot');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // MOBILE MENU
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // REVEAL ON SCROLL
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => io.observe(el));
+
+  // SMOOTH ANCHOR
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
