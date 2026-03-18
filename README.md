@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="assets/preview.png" width="100%" />
+</p>
 # 🌟 NIMIZA
 
 ### Helping Kids Grow Curious, Aware & Confident
