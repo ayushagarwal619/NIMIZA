@@ -1,202 +1,159 @@
-# NIMIZA 🌟
+# 🌟 NIMIZA
 
 ### Helping Kids Grow Curious, Aware & Confident
 
-**NIMIZA** is an interactive learning platform designed to help children build **general awareness, curiosity, confidence, and essential life skills** through storytelling, characters, games, and playful digital experiences.
-
-The mission of **NIMIZA** is simple:
-
-> Turn screen time into meaningful learning time for children.
-
-Through stories, short animated reels, interactive games, and characters, NIMIZA encourages kids to explore the world around them while learning important everyday concepts.
-
----
-
-# 🌐 Live Demo
-
-https://ayushagarwal619.github.io/NIMIZA
+<p align="center">
+  <a href="https://ayushagarwal619.github.io/NIMIZA">
+    <img src="https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge" />
+  </a>
+  <img src="https://img.shields.io/badge/Status-Active%20Development-blue?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/Made%20With-HTML%20CSS%20JS-orange?style=for-the-badge" />
+</p>
 
 ---
 
-# 🌍 The Idea
+## 🚀 Live Demo
 
-Children today spend a large amount of time on screens.
-However, much of the digital content available to them focuses mainly on **entertainment rather than meaningful learning**.
-
-**NIMIZA aims to change that.**
-
-The platform combines:
-
-* 📖 Storytelling
-* 🎭 Interactive characters
-* 🎮 Learning games
-* 🌍 General awareness learning
-
-to create a **fun and engaging learning environment for children aged 3–8**.
-
-Kids learn through small adventures that introduce everyday ideas such as curiosity, exploration, cooperation, problem solving, and awareness of the world.
+🔗 https://ayushagarwal619.github.io/NIMIZA
 
 ---
 
-# 🎭 Meet the Characters
+## 🌍 About NIMIZA
 
-NIMIZA introduces friendly characters who guide children through adventures and learning experiences.
+**NIMIZA** is an interactive learning platform designed for children aged **3–8** to build:
 
-### 🟡 Nino – The Curious Explorer
+- 🌱 Curiosity  
+- 🧠 Awareness  
+- 💬 Confidence  
+- 🎨 Creativity  
 
-Nino loves discovering new things.
-He encourages kids to ask questions, explore ideas, and stay curious about the world.
+👉 The goal is simple:
 
-### 🔵 Miko – The Helpful Friend
+> **Turn screen time into meaningful learning time.**
 
-Miko shows how cooperation, sharing, and teamwork can make everyday situations better.
-
-### 🟣 Zara – The Smart Problem Solver
-
-Zara inspires children to think independently, solve problems, and approach challenges with confidence.
-
-These characters make learning feel like a **fun adventure rather than a lesson**.
+Through stories, characters, games, and habit-building tools, NIMIZA creates a fun learning environment where kids grow naturally.
 
 ---
 
-# 🚀 Platform Features
+## 🎭 Characters
 
-The NIMIZA platform focuses on playful and interactive learning experiences.
+| Character | Role | Teaches |
+|----------|------|--------|
+| 🟡 **Nino** | Curious Explorer | Curiosity & Discovery |
+| 🔵 **Miko** | Helpful Friend | Kindness & Teamwork |
+| 🟣 **Zara** | Problem Solver | Confidence & Thinking |
+
+---
+
+## 🚀 Features
 
 ### 🎬 Animated Learning Reels
-
-Short animated adventures that introduce everyday awareness topics in a fun and engaging way.
+Short, engaging videos introducing real-world concepts.
 
 ### 📚 Interactive Storybooks
-
-Stories that help children understand situations, ideas, and simple concepts through storytelling.
+Six story-based adventures with meaningful lessons.
 
 ### 🎮 Learning Games
+- Balloon Pop (reaction & speed)  
+- Slide Puzzle (logic & focus)
 
-Interactive mini-games that encourage observation, thinking, and exploration.
+### 🎭 Interactive Characters
+Guided learning with Nino, Miko, and Zara.
 
-### 🧩 Puzzle Game
+### 📊 Progress Tracking *(New)*
+Monitor children’s learning activities and engagement.
 
-A fun puzzle-based activity designed to improve children's focus, curiosity, and logical thinking.
+### 📓 Daily Routine System *(New)*
+Helps kids build habits and structured daily learning.
 
-### 🌈 Interactive Characters
-
-Characters that guide children through the experience and make learning more engaging.
-
----
-
-# 🧠 What Kids Can Learn
-
-Through stories, reels, and activities, NIMIZA introduces children to important ideas such as:
-
-* 💡 Curiosity and exploration
-* 🌍 Awareness of everyday situations
-* 🤝 Cooperation and teamwork
-* 💬 Communication skills
-* 🎨 Creativity and imagination
-* 🧩 Problem-solving abilities
-
-These skills help children better understand the world while developing confidence and curiosity.
+### 🌈 Mood Rings *(New)*
+Encourages emotional awareness and expression.
 
 ---
 
-# 🎮 Learning Experiences
+## 🧠 Learning Outcomes
 
-NIMIZA provides different types of playful learning experiences:
+Kids develop:
 
-📺 **Animated learning reels**
-Short adventures featuring Nino, Miko, and Zara.
-
-📚 **Interactive storybooks**
-Stories that introduce ideas through characters and situations.
-
-🎮 **Learning games**
-Mini-games designed to build awareness and thinking skills.
-
-🧩 **Puzzle challenges**
-Simple puzzles that make kids think while having fun.
-
-🎁 **Learning kits (future concept)**
-Hands-on activities designed to extend learning beyond screens.
+- 💡 Curiosity  
+- 🌍 Awareness  
+- 🤝 Teamwork  
+- 💬 Communication  
+- 🎨 Creativity  
+- 🧩 Problem-solving  
 
 ---
 
-# 🎨 User Experience
+## 🎨 User Experience
 
-The platform is designed with a **child-friendly interface** that focuses on fun and exploration.
-
-Key UI features include:
-
-* Colorful and playful interface
-* Kid-friendly animations
-* Moving character elements across the page
-* Interactive story and video sections
-* Responsive layout for mobile and desktop
-* Friendly and engaging visual design
+- ✨ Kid-friendly UI  
+- 🎭 Animated interactions  
+- 📱 Fully responsive design  
+- 🎮 Interactive sections & games  
+- 🌈 Visually engaging layout  
 
 ---
 
-# 🛠 Tech Stack
-
-The current prototype is built using modern web technologies.
+## 🛠 Tech Stack
 
 ### Frontend
+- HTML5  
+- CSS3  
+- JavaScript (Vanilla)
 
-* **HTML5** – Website structure
-* **CSS3** – Styling, layout, and animations
-* **JavaScript (Vanilla JS)** – Interactivity and dynamic behavior
-
-### Design & UI
-
-* Responsive Web Design
-* Custom animations and transitions
-* Kid-friendly UI/UX principles
-
-### Tools & Platform
-
-* **Git & GitHub** – Version control and project hosting
-* **GitHub Pages** – Live website deployment
-* **Google Fonts** – Typography
+### Tools
+- Git & GitHub  
+- GitHub Pages  
+- Google Fonts  
 
 ---
 
-# 🔮 Future Improvements
+## 🔮 Future Scope
 
-NIMIZA may evolve with more advanced technologies such as:
-
-* ⚛️ React / Next.js for scalable interface
-* 🌐 Backend integration for user accounts
-* 📊 Progress tracking for children
-* 📱 Mobile application version
-* 🤖 AI-assisted storytelling experiences
-* 🎮 More educational games and puzzles
+- ⚛️ React / Next.js migration  
+- 🌐 Backend with user accounts  
+- 📱 Mobile app (Android & iOS)  
+- 🤖 AI-powered storytelling  
+- 🎮 Gamification (rewards, levels, achievements)
 
 ---
 
-# 🎯 Vision
+## 📌 Project Status
 
-The long-term vision of **NIMIZA** is to become a children's learning platform that helps kids grow into:
+🚧 **Active Development**
 
-🌱 Curious learners
-🧠 Aware thinkers
-💬 Confident communicators
-🌍 Responsible individuals
-
-By combining **storytelling, characters, games, and exploration**, NIMIZA aims to make learning **natural, engaging, and joyful for children**.
+Core features like stories, games, routines, and tracking are implemented.  
+Next phase focuses on scalability, AI, and personalization.
 
 ---
 
-# 📌 Project Status
-
-🚧 **Work in Progress**
-
-This repository currently contains the **NIMIZA platform prototype**.
-New features, improvements, stories, games, and animations will continue to be added.
-
----
-
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 **Ayush Agarwal**
 
-If you like this project, feel fre
+---
+
+## ⭐ Support
+
+If you like this project, consider:
+
+- ⭐ Starring the repository  
+- 🍴 Forking for your own ideas  
+- 📢 Sharing with others  
+
+---
+
+## 💡 Vision
+
+To build a platform where children grow into:
+
+🌱 Curious learners  
+🧠 Aware thinkers  
+💬 Confident communicators  
+🌍 Responsible individuals  
+
+---
+
+<p align="center">
+  Made with ❤️ for the future generation
+</p>
